@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { useTheme } from '../contexts/ThemeContext.jsx'
 import './Auth.css'
 
@@ -27,6 +27,20 @@ function Cart() {
       setCart(JSON.parse(storedCart))
     }
   }, [navigate])
+
+  const location = useLocation()
+
+  // auto checkout when navigated via Buy Now
+  useEffect(() => {
+    const params = new URLSearchParams(location.search)
+    const buyNow = params.get('buyNow') === 'true'
+    if (buyNow && cart.length > 0) {
+      // small delay so UI updates before alert
+      setTimeout(() => {
+        handleCheckout()
+      }, 300)
+    }
+  }, [location.search, cart])
 
   const removeFromCart = (index) => {
     const newCart = [...cart]

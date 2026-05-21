@@ -12,17 +12,19 @@ import sturmtigerImg from './Images/sturmtiger.jpg'
 // German Tanks data
 const tankItems = [
   { id: 1, name: 'Panzerkampfwagen IV H', category: 'Medium Tanks', era: 'World War 2', price: 25000, image: panzerImg, rarity: 'Standard' },
-  { id: 2, name: 'King Tiger', category: 'Heavy Tanks', era: 'World War 2', price: 85000, image: tigerImg, rarity: 'Premium' },
-  { id: 3, name: 'Panther II', category: 'Medium Tanks', era: 'World War 2', price: 45000, image: pantherImg, rarity: 'Standard' },
+  { id: 2, name: 'Panzerkampfwagen Tiger Ausf. B', category: 'Heavy Tanks', era: 'World War 2', price: 85000, image: tigerImg, rarity: 'Premium' },
+  { id: 3, name: 'Panzerkampfwagen Panther II', category: 'Medium Tanks', era: 'World War 2', price: 45000, image: pantherImg, rarity: 'Standard' },
   { id: 4, name: 'Sonderkraftfahrzeug 234', category: 'Tank Destroyers', era: 'World War 2', price: 35000, image: pumaImg, rarity: 'Standard' },
   { id: 5, name: 'Puma IFV', category: 'Light Tanks', era: 'Modern', price: 55000, image: pumaIFVImg, rarity: 'Standard' },
-  { id: 6, name: 'Sturmtiger', category: 'Assault Gun', era: 'World War 2', price: 75000, image: sturmtigerImg, rarity: 'Premium' },
+  { id: 6, name: 'Sturmmörserwagen 606/4 mit 38 cm RW 61', category: 'Assault Gun', era: 'World War 2', price: 75000, image: sturmtigerImg, rarity: 'Premium' },
 ]
 
 function Homepage() {
   const navigate = useNavigate()
   const [userData, setUserData] = useState(null)
   const [cart, setCart] = useState([])
+  const [selectedItem, setSelectedItem] = useState(null)
+  const [showModal, setShowModal] = useState(false)
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('All')
   const [showFilters, setShowFilters] = useState(false)
@@ -47,6 +49,16 @@ function Homepage() {
       setCart(JSON.parse(storedCart))
     }
   }, [navigate])
+
+  const openModal = (item) => {
+    setSelectedItem(item)
+    setShowModal(true)
+  }
+
+  const closeModal = () => {
+    setSelectedItem(null)
+    setShowModal(false)
+  }
 
   const handleLogout = () => {
     sessionStorage.removeItem('userData')
@@ -99,6 +111,13 @@ function Homepage() {
 
   if (!userData) {
     return <div className="loading">Loading...</div>
+  }
+
+  const handleBuyNow = (item) => {
+    // replace cart with single item and navigate to cart with buyNow flag
+    const buyCart = [item]
+    sessionStorage.setItem('cart', JSON.stringify(buyCart))
+    navigate('/cart?buyNow=true')
   }
 
   return (
@@ -171,7 +190,7 @@ function Homepage() {
                 <h2 className="section-title">{cat}</h2>
                 <div className="tank-row">
                   {groupedItems[cat].map(item => (
-                    <div key={item.id} className="item-card tank-card">
+                    <div key={item.id} className="item-card tank-card" onClick={() => openModal(item)}>
                       <div className="tank-visual">
                         <img 
                           src={item.image} 
@@ -199,12 +218,7 @@ function Homepage() {
                         <p className="item-category">{item.category} - {item.era}</p>
                         <div className="item-footer">
                           <span className="item-price">💰 {item.price.toLocaleString()}</span>
-                          <button 
-                            className="btn-add-cart"
-                            onClick={() => addToCart(item)}
-                          >
-                            Add to Cart
-                          </button>
+                          {/* Add to Cart moved to modal; click card to open details */}
                         </div>
                       </div>
                     </div>
@@ -215,6 +229,28 @@ function Homepage() {
           ))}
         </div>
       </div>
+
+      {/* Item Modal */}
+      {showModal && selectedItem && (
+        <div className="modal-overlay" onClick={closeModal}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-image">
+              <img src={selectedItem.image} alt={selectedItem.name} onError={(e) => e.target.style.display = 'none'} />
+            </div>
+            <div className="modal-body">
+              <h2>{selectedItem.name}</h2>
+              <p className="item-category">{selectedItem.category} - {selectedItem.era}</p>
+              <p className="item-rarity">{selectedItem.rarity}</p>
+              <p className="item-price-large">💰 {selectedItem.price.toLocaleString()}</p>
+              <div className="modal-buttons">
+                <button className="btn-buy-now" onClick={() => { handleBuyNow(selectedItem); closeModal() }}>Buy Now</button>
+                <button className="btn-add-cart" onClick={() => { addToCart(selectedItem); closeModal() }}>Add to Cart</button>
+              </div>
+              <button className="modal-close" onClick={closeModal}>Close</button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Footer */}
       <footer className="marketplace-footer">
