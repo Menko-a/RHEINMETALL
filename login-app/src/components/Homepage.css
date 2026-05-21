@@ -195,10 +195,10 @@ body {
 }
 
 .tank-row {
-	display: flex;
-	flex-wrap: wrap;
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
 	gap: 25px;
-	justify-content: flex-start;
+	align-items: stretch;
 }
 
 /* Tank Card */
@@ -507,7 +507,7 @@ body {
 .modal-overlay {
 	position: fixed;
 	inset: 0;
-	background: rgba(0,0,0,0.6);
+	background: rgba(0, 0, 0, 0.6);
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -561,12 +561,14 @@ body {
 	border: none;
 	border-radius: 6px;
 	cursor: pointer;
-	transition: transform 0.15s ease, box-shadow 0.15s ease;
+	transition:
+		transform 0.15s ease,
+		box-shadow 0.15s ease;
 }
 
 .modal-close:hover {
 	transform: translateY(-2px);
-	box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+	box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
 }
 
 /* Responsive */
