@@ -13,6 +13,7 @@ function Login() {
   const onSubmit = (data) => {
     // Simulate login - in real app, validate against backend
     console.log('Login data:', data)
+    sessionStorage.setItem('userData', JSON.stringify({ email: data.email }))
     navigate('/homepage')
   }
 

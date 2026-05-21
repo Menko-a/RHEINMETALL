@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useTheme } from '../contexts/ThemeContext.jsx'
 import './Homepage.css'
 import panzerImg from './Images/panzer IV H.jpg'
 import tigerImg from './Images/Tiger II.jpg'
@@ -26,6 +27,8 @@ function Homepage() {
   const [selectedCategory, setSelectedCategory] = useState('All')
   const [showFilters, setShowFilters] = useState(false)
 
+  const { theme, toggleTheme } = useTheme();
+
   useEffect(() => {
     const storedUserData = sessionStorage.getItem('userData')
     const registeredEmail = sessionStorage.getItem('registeredEmail')
@@ -37,6 +40,12 @@ function Homepage() {
     } else {
       navigate('/login')
     }
+
+    // Load cart from sessionStorage
+    const storedCart = sessionStorage.getItem('cart')
+    if (storedCart) {
+      setCart(JSON.parse(storedCart))
+    }
   }, [navigate])
 
   const handleLogout = () => {
@@ -46,13 +55,16 @@ function Homepage() {
   }
 
   const addToCart = (item) => {
-    setCart([...cart, item])
+    const newCart = [...cart, item]
+    setCart(newCart)
+    sessionStorage.setItem('cart', JSON.stringify(newCart))
   }
 
   const removeFromCart = (index) => {
     const newCart = [...cart]
     newCart.splice(index, 1)
     setCart(newCart)
+    sessionStorage.setItem('cart', JSON.stringify(newCart))
   }
 
   const getTotalPrice = () => {
@@ -94,7 +106,7 @@ function Homepage() {
       {/* Header */}
       <header className="marketplace-header">
         <div className="header-left">
-          <h1>🇩🇪 German Tank Marketplace</h1>
+          <h1>RHEINMETALL</h1>
         </div>
         <div className="header-right">
           <div className="user-profile">
@@ -103,9 +115,20 @@ function Homepage() {
             )}
             <span>{userData.firstName || userData.email}</span>
           </div>
-          <div className="cart-icon">
+          <div 
+            className="cart-icon"
+            onClick={() => navigate('/cart')}
+            style={{ cursor: 'pointer' }}
+          >
             🛒 <span className="cart-count">{cart.length}</span>
           </div>
+          <button 
+            onClick={toggleTheme} 
+            className="btn-theme-toggle"
+            title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+          >
+            {theme === 'dark' ? '☀️' : '🌙'}
+          </button>
           <button onClick={handleLogout} className="btn-logout">Logout</button>
         </div>
       </header>
@@ -191,39 +214,6 @@ function Homepage() {
             )
           ))}
         </div>
-
-        {/* Cart Sidebar */}
-        <div className="cart-sidebar">
-          <h2>Your Cart 🛒</h2>
-          {cart.length === 0 ? (
-            <p className="cart-empty">Your cart is empty</p>
-          ) : (
-            <>
-              <div className="cart-items">
-                {cart.map((item, index) => (
-                  <div key={index} className="cart-item">
-                    <span className="cart-item-icon">🪖</span>
-                    <div className="cart-item-info">
-                      <span className="cart-item-name">{item.name}</span>
-                      <span className="cart-item-price">💰 {item.price.toLocaleString()}</span>
-                    </div>
-                    <button 
-                      className="btn-remove"
-                      onClick={() => removeFromCart(index)}
-                    >
-                      ✕
-                    </button>
-                  </div>
-                ))}
-              </div>
-              <div className="cart-total">
-                <span>Total:</span>
-                <span className="total-price">💰 {getTotalPrice().toLocaleString()}</span>
-              </div>
-              <button className="btn-checkout">Checkout</button>
-            </>
-          )}
-        </div>
       </div>
 
       {/* Footer */}
@@ -254,7 +244,7 @@ function Homepage() {
           </div>
         </div>
         <div className="footer-bottom">
-          <p>&copy; 2026 German Tank Marketplace. All rights reserved.</p>
+          <p>&copy; 2026 RHEINMETALL. All rights reserved.</p>
         </div>
       </footer>
     </div>

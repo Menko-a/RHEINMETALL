@@ -5,21 +5,23 @@
 	min-height: 100vh;
 	width: 100%;
 	padding: 20px;
+	background: var(--bg-primary);
 }
 
 .auth-card {
-	background: white;
+	background: var(--card-bg);
 	padding: 40px;
 	border-radius: 12px;
-	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+	box-shadow: var(--shadow);
 	width: 100%;
 	max-width: 400px;
+	border: 1px solid var(--border-color);
 }
 
 .auth-card h1 {
 	text-align: center;
 	margin-bottom: 30px;
-	color: #333;
+	color: var(--text-primary);
 	font-size: 28px;
 }
 
@@ -30,7 +32,7 @@
 .form-group label {
 	display: block;
 	margin-bottom: 8px;
-	color: #555;
+	color: var(--text-secondary);
 	font-weight: 500;
 }
 
@@ -40,24 +42,27 @@
 .form-group input[type="file"] {
 	width: 100%;
 	padding: 12px 16px;
-	border: 2px solid #e0e0e0;
+	border: 2px solid var(--border-color);
 	border-radius: 8px;
 	font-size: 14px;
 	transition: border-color 0.3s ease;
+	background: var(--bg-secondary);
+	color: var(--text-primary);
 }
 
 .form-group input:focus {
 	outline: none;
-	border-color: #4a90d9;
+	border-color: var(--accent-color);
 }
 
 .form-group input::placeholder {
-	color: #aaa;
+	color: var(--text-secondary);
+	opacity: 0.7;
 }
 
 .error {
 	display: block;
-	color: #e74c3c;
+	color: var(--error-color);
 	font-size: 12px;
 	margin-top: 6px;
 }
@@ -65,7 +70,7 @@
 .btn-primary {
 	width: 100%;
 	padding: 14px;
-	background: linear-gradient(135deg, #4a90d9 0%, #357abd 100%);
+	background: var(--btn-primary);
 	color: white;
 	border: none;
 	border-radius: 8px;
@@ -79,7 +84,7 @@
 
 .btn-primary:hover {
 	transform: translateY(-2px);
-	box-shadow: 0 4px 12px rgba(74, 144, 217, 0.4);
+	box-shadow: var(--btn-primary-hover);
 }
 
 .btn-primary:active {
@@ -89,11 +94,11 @@
 .auth-link {
 	text-align: center;
 	margin-top: 20px;
-	color: #666;
+	color: var(--text-secondary);
 }
 
 .auth-link a {
-	color: #4a90d9;
+	color: var(--accent-color);
 	text-decoration: none;
 	font-weight: 600;
 }
@@ -109,7 +114,7 @@
 	margin: 0 auto 15px;
 	border-radius: 50%;
 	overflow: hidden;
-	background: #f5f5f5;
+	background: var(--bg-secondary);
 }
 
 .preview-img {
@@ -124,9 +129,9 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	border: 2px dashed #ccc;
+	border: 2px dashed var(--border-color);
 	border-radius: 50%;
-	color: #999;
+	color: var(--text-secondary);
 	font-size: 12px;
 }
 

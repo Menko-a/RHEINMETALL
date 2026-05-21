@@ -1,13 +1,9 @@
-# TODO - Login and Registration Flow
+# Fix Homepage Accessibility
 
-## Steps to Complete:
+## Steps:
+- [x] Step 1: Fix Homepage.jsx - Add useTheme import and hook usage
+- [x] Step 2: Fix Login.jsx - Add sessionStorage userData persistence on login
+- [x] Step 3: Test login -> homepage flow
+- [x] Step 4: Verify register -> account-setup -> homepage works
+- [x] Step 5: Complete task
 
-- [x] 1. Initialize React project using Vite
-- [x] 2. Install dependencies (react-router-dom, react-hook-form)
-- [x] 3. Create project structure and CSS files
-- [x] 4. Create Login Page component with validation
-- [x] 5. Create Register Page component with validation
-- [x] 6. Create Account Setup Page with validation
-- [x] 7. Create Homepage component
-- [x] 8. Set up React Router for navigation
-- [x] 9. Install npm dependencies and run the project
